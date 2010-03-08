@@ -22,19 +22,27 @@ object Game {
 
     for (i <- 0 until board.length) {
       for (j <- 0 until board.length) {
-        computeLives(board.slice(Math.max(i - 1, 0), i + 2), board.length, i, j)
+        println(computeLives(board, i, j))
       }
     }
   }
 
-  def computeLives(neighbors:Array[Array[String]], boardLength:Int, currentRow:Int, currentColumn:Int) = {
+  def computeLives(board:Array[Array[String]], currentRow:Int, currentColumn:Int):Int = {
+    var lives:Int = 0
     println
     println("(" + currentRow + ", " + currentColumn + ")")
-    for (i <- 0 until neighbors.length) {
-      for (j <- Math.max(0, currentColumn - 1) to (Math.min(currentColumn + 1, boardLength - 1))) {
-        print (neighbors(i)(j))
+    for (i <- Math.max(0, currentRow - 1) to Math.min(board.length - 1, currentRow + 1)) {
+      for (j <- Math.max(0, currentColumn - 1) to Math.min(board.length - 1, currentColumn + 1)) {
+        if (j == currentColumn && i == currentRow)
+          print("!")
+        else {
+          print (board(i)(j))
+          if (board(i)(j) == "*")
+            lives = lives + 1
+        }
       }
-      println  
+      println
     }
+    lives
   }
 }
