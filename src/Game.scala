@@ -7,24 +7,24 @@ object Game {
 
   def main(args: Array[String]) {
 
-    val board = Array(
-      Array("-", "-", "-", "-", "-"),
-      Array("-", "*", "*", "*", "-"),
-      Array("-", "-", "-", "-", "-"),
-      Array("-", "-", "-", "-", "-"),
-      Array("-", "-", "-", "-", "-"))
-
 //    val board = Array(
-//      Array("-", "-", "-", "-", "-", "-"),
-//      Array("-", "*", "*", "-", "-", "-"),
-//      Array("-", "*", "-", "-", "-", "-"),
-//      Array("-", "-", "-", "-", "*", "-"),
-//      Array("-", "-", "-", "*", "*", "-"),
-//      Array("-", "-", "-", "-", "-", "-"))
+//      Array("-", "-", "-", "-", "-"),
+//      Array("-", "-", "-", "-", "-"),
+//      Array("-", "*", "*", "*", "-"),
+//      Array("-", "-", "-", "-", "-"),
+//      Array("-", "-", "-", "-", "-"))
+
+    val board = Array(
+      Array("-", "-", "-", "-", "-", "-"),
+      Array("-", "*", "*", "-", "-", "-"),
+      Array("-", "*", "-", "-", "-", "-"),
+      Array("-", "-", "-", "-", "*", "-"),
+      Array("-", "-", "-", "*", "*", "-"),
+      Array("-", "-", "-", "-", "-", "-"))
         
     printBoard(board)
 
-    for (loops <- 1 to 5) {
+    for (loops <- 1 to 2) {
       for (i <- 0 until board.length) {
         for (j <- 0 until board.length) {
           val lives = computeLives(board, i, j)
@@ -48,9 +48,7 @@ object Game {
     //println("(" + currentRow + ", " + currentColumn + ")")
     for (i <- Math.max(0, currentRow - 1) to Math.min(board.length - 1, currentRow + 1)) {
       for (j <- Math.max(0, currentColumn - 1) to Math.min(board.length - 1, currentColumn + 1)) {
-        if (j == currentColumn && i == currentRow)
-          lives
-        else {
+        if (i != currentRow || j != currentColumn) {
           //print (board(i)(j))
           if (board(i)(j) == "*")
             lives = lives + 1
