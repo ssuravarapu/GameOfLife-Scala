@@ -5,14 +5,13 @@
 object Game {
 
   def main(args: Array[String]) {
-
     val board = Array(
-      Array("-", "-", "-", "-", "-", "-"),
-      Array("-", "*", "*", "-", "-", "-"),
-      Array("-", "*", "-", "-", "-", "-"),
-      Array("-", "-", "-", "-", "*", "-"),
-      Array("-", "-", "-", "*", "*", "-"),
-      Array("-", "-", "-", "-", "-", "-"))
+      Array(".", ".", ".", ".", ".", "."),
+      Array(".", "*", "*", ".", ".", "."),
+      Array(".", "*", ".", ".", ".", "."),
+      Array(".", ".", ".", ".", "*", "."),
+      Array(".", ".", ".", "*", "*", "."),
+      Array(".", ".", ".", ".", ".", "."))
         
     printBoard(board)
 
@@ -28,9 +27,9 @@ object Game {
       for (j <- 0 until board.length) {
         val lives = computeLives(board, i, j)
         val cell = board (i)(j) match {
-          case "-" => if (lives == 3) "*"
+          case "." => if (lives == 3) "*"
             else board(i)(j)
-          case "*" => if (lives <= 1 || lives >= 4) "-"
+          case "*" => if (lives <= 1 || lives >= 4) "."
             else board(i)(j)
         }
         changes + ((i, j) -> cell)
