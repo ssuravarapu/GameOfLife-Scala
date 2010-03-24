@@ -6,12 +6,12 @@ object Game {
 
   def main(args: Array[String]) {
     val board = Array(
-      Array(".", ".", ".", ".", ".", "."),
+      Array make (6, "."),
       Array(".", "*", "*", ".", ".", "."),
       Array(".", "*", ".", ".", ".", "."),
       Array(".", ".", ".", ".", "*", "."),
       Array(".", ".", ".", "*", "*", "."),
-      Array(".", ".", ".", ".", ".", "."))
+      Array make (6, "."))
         
     printBoard(board)
 
