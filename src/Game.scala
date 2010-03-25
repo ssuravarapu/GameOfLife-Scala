@@ -3,48 +3,34 @@
  */
 
 object Game {
-
-  def main(args: Array[String]) {
-    val board = Array(
-      Array make (6, "."),
-      Array(".", "*", "*", ".", ".", "."),
-      Array(".", "*", ".", ".", ".", "."),
-      Array(".", ".", ".", ".", "*", "."),
-      Array(".", ".", ".", "*", "*", "."),
-      Array make (6, "."))
-        
-    printBoard(board)
-
-    for (period <- 1 to 2) {
-      generationalChange(board)
-      printBoard(board)
-    }
-  }
-
-  def generationalChange(board:Array[Array[String]]):Array[Array[String]] = {
-    val changes = scala.collection.mutable.Map.empty[Tuple2[Int, Int], String]
-    for (i <- 0 until board.length) {
-      for (j <- 0 until board.length) {
-        val lives = computeLives(board, i, j)
-        val cell = board (i)(j) match {
-          case "." => if (lives == 3) "*"
-            else board(i)(j)
-          case "*" => if (lives <= 1 || lives >= 4) "."
-            else board(i)(j)
-        }
-        changes + ((i, j) -> cell)
-      }
-    }
-    changes foreach (m => board(m._1._1)(m._1._2) = m._2)
+  def buildBoard(liveCells:List[Tuple2[Int, Int]], sideWidth:Int):Array[Array[Boolean]] = {
+    val board = new Array[Array[Boolean]](sideWidth, sideWidth)
+    liveCells foreach (arg => board(arg._1)(arg._2) = true)
     board
   }
 
-  def computeLives(board:Array[Array[String]], currentRow:Int, currentColumn:Int):Int = {
+  def generationalChange(board:Array[Array[Boolean]]):Array[Array[Boolean]] = {
+    val newBoard = new Array[Array[Boolean]](board.length, board.length)
+    for (row <- 0 until board.length) {
+      for (col <- 0 until board.length) {
+        val lives = computeLives(board, row, col)
+        if (lives == 3 && !board(row)(col))
+          newBoard(row)(col) = true
+        else if ((lives <= 1 || lives >= 4) && board(row)(col))
+          newBoard(row)(col) = false
+        else
+          newBoard(row)(col) = board(row)(col)
+      }
+    }
+    newBoard
+  }
+
+  def computeLives(board:Array[Array[Boolean]], currentRow:Int, currentColumn:Int):Int = {
     var lives:Int = 0
     for (i <- Math.max(0, currentRow - 1) to Math.min(board.length - 1, currentRow + 1)) {
       for (j <- Math.max(0, currentColumn - 1) to Math.min(board.length - 1, currentColumn + 1)) {
         if (i != currentRow || j != currentColumn) {
-          if (board(i)(j) == "*")
+          if (board(i)(j))
             lives = lives + 1
         }
       }
@@ -52,13 +38,22 @@ object Game {
     lives
   }
 
-  def printBoard(board:Array[Array[String]]) = {
+  def printBoard(board:Array[Array[Boolean]]) = {
     println
     board.foreach {i =>
       i.foreach { j =>
-        print (j)
+        if (j) print("*") else print(".")
       }
       println
     }
   }
+
+  def main(args: Array[String]) {
+    var board = buildBoard(List((1,1), (1,2), (2,1), (3,4), (4,3), (4,4)), 6)
+    printBoard(board)
+    for (period <- 1 to 2) {
+      board = generationalChange(board)
+      printBoard(board)
+    }
+  }  
 }
