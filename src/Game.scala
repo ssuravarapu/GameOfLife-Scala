@@ -26,16 +26,14 @@ object Game {
   }
 
   def computeLives(board:Array[Array[Boolean]], currentRow:Int, currentColumn:Int):Int = {
-    var lives:Int = 0
-    for (i <- Math.max(0, currentRow - 1) to Math.min(board.length - 1, currentRow + 1)) {
+    var lives:Int = for (i <- Math.max(0, currentRow - 1) to Math.min(board.length - 1, currentRow + 1)) {
       for (j <- Math.max(0, currentColumn - 1) to Math.min(board.length - 1, currentColumn + 1)) {
         if (i != currentRow || j != currentColumn) {
           if (board(i)(j))
-            lives = lives + 1
+            lives += 1
         }
       }
     }
-    lives
   }
 
   def printBoard(board:Array[Array[Boolean]]) = {
