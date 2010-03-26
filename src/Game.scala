@@ -25,6 +25,23 @@ object Game {
     newBoard
   }
 
+  def generationalChange(board:Array[Array[Boolean]]):Array[Array[Boolean]] = {
+    val newBoard = new Array[Array[Boolean]](board.length, board.length)
+    newBoard = for {
+      row <- 0 until board.length
+      col <- 0 until board.length
+      val lives = computeLives(board, row, col)
+      val cell =
+        if (lives == 3 && !board(row)(col))
+            true
+        else if ((lives <= 1 || lives >= 4) && board(row)(col))
+            false
+        else
+            board(row)(col)
+    } yield cell
+  }
+
+
   def computeLives(board:Array[Array[Boolean]], currentRow:Int, currentColumn:Int):Int = {
     var lives:Int = for (i <- Math.max(0, currentRow - 1) to Math.min(board.length - 1, currentRow + 1)) {
       for (j <- Math.max(0, currentColumn - 1) to Math.min(board.length - 1, currentColumn + 1)) {
@@ -46,7 +63,7 @@ object Game {
     }
   }
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]) = {
     var board = buildBoard(List((1,1), (1,2), (2,1), (3,4), (4,3), (4,4)), 6)
     printBoard(board)
     for (period <- 1 to 2) {
