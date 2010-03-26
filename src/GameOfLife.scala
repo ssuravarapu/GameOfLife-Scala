@@ -2,7 +2,7 @@
  * @author Surya Suravarapu
  */
 
-object Game {
+object GameOfLife {
   def buildBoard(liveCells:List[Tuple2[Int, Int]], sideWidth:Int):Array[Array[Boolean]] = {
     val board = new Array[Array[Boolean]](sideWidth, sideWidth)
     liveCells foreach (arg => board(arg._1)(arg._2) = true)
